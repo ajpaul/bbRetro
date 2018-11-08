@@ -1,0 +1,27 @@
+<!--The content below is only a placeholder and can be replaced.-->
+<div style="text-align:center">
+
+  <app-new-user></app-new-user>
+
+  <h1>
+    Welcome to {{ title }}!
+  </h1>
+
+  <h4>
+    Total active users {{ totalUsers }}
+  </h4>
+
+  <input [(ngModel)]="item.text">
+
+  <button (click)="createNewItem()">Send message</button>
+
+  <div *ngFor="let item of retroItems">
+    <span>{{ item.text }} with ID: {{ item.id }} and {{ item.upvotes}} upvotes and {{ item.downvotes }} downvotes</span>
+    <button (click)="upvote(item)">Upvote</button>
+    <button (click)="downvote(item)">Downvote</button>
+    <button (click)="deleteItem(item)">Delete</button>
+  </div>
+</div>
+
+
+
