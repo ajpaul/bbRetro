@@ -8,7 +8,8 @@ let auditLog = {};
 let stateId = 0;
 let auditId = 0;
 let totalUsers = 0;
-let admin = { status: true, id: '' };
+let admin = { status: true, id: '', adminName: '' };
+let adminConfig = {};
 
 io.on('connection', (socket) => {
 
@@ -24,11 +25,11 @@ io.on('connection', (socket) => {
     if(admin.status || socket.id === admin.id) { // for reconnections
         admin.status = false;
         admin.id = socket.id;
-        io.emit('admin', { admin: admin.id, status: true });
+        io.emit('admin', { admin: admin.id, status: true, adminName: '' });
     } 
     else {
         console.log(`stored: ${admin.id}, connected: ${socket.id}`);
-        io.emit('admin', { admin: 'not you', status: false }); // lol
+        io.emit('admin', { admin: admin.id, status: false, adminName: admin.adminName }); // lol
     }
 
     socket.on('newItem', (item) => {
@@ -41,24 +42,29 @@ io.on('connection', (socket) => {
         events.upvote(item, io);
         updateState('upvote', item.id);
         audit('upvote');
-    })
+    });
      
     socket.on('downvote', (item) => {
         events.downvote(item, io);
         updateState('downvote', item.id);
         audit('downvote');
-    })
+    });
 
     socket.on('deleteItem', (item) => {
         events.deleteItem(item, io);
         audit('deleteItem');
-    })
+    });
 
-    socket.on('disconnect', (item) => {
+    socket.on('disconnect', () => {
         totalUsers--;
         events.userCount(io, totalUsers);
         audit('userCount change');
-    })
+    });
+
+    socket.on('adminConfig', (config) => {
+        adminConfig = config;
+        admin.adminName = config.adminName;
+    });
 });
 
 // Initialize our websocket server on port 5000

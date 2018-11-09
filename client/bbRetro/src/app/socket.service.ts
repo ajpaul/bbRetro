@@ -4,6 +4,7 @@ import * as socketIo from 'socket.io-client';
 import { Observable } from 'rxjs';
 import { first } from 'rxjs/operators';
 import { RetroItem, RetroEvent } from './retro';
+import { NewUser, Admin } from './user/new-user/user';
 
 @Injectable({
   providedIn: 'root'
@@ -32,6 +33,10 @@ export class SocketService {
 
   deleteItem(retroItem: RetroItem): void {
     this.socket.emit('deleteItem', retroItem);
+  }
+
+  sendConfig(config): void { // add a type
+    this.socket.emit('adminConfig', config);
   }
 
   getMessages = (): Observable<RetroItem> => {

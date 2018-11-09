@@ -1,32 +1,53 @@
-<ng-template #userModal let-modal>
+<ng-template #userModal let-userModal>
   <div class="modal-header">
-    <h4 class="modal-title">Modal title</h4>
-    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+    <h4 class="modal-title">Welcome to {{ adminName }}'s retro room!</h4>
+    <!-- <button type="button" class="close" aria-label="Close" (click)="userModal.dismiss('Cross click')">
       <span aria-hidden="true">&times;</span>
-    </button>
+    </button> -->
   </div>
   <div class="modal-body">
     <p>New user modal&hellip;</p>
+    <form #newUserForm="ngForm">
+      <div class="form-group"> 
+        <label for="userName">Name</label>
+        <input type="text" name="userName" class="form-control" #userName="ngModel" required [(ngModel)]="user.name">
+        <!-- <div *ngIf="(newUserForm.submitted || userName.touched) && userName.errors">
+          <div *ngIf="userName.errors.required">Name is required.</div>
+        </div> -->
+      </div>
+    </form>
   </div>
   <div class="modal-footer">
-    <button type="button" class="btn btn-light" (click)="modal.close('Close click')">Close</button>
+    <button type="button" class="btn btn-light" 
+      (click)="userModal.close('Close click')"
+      [disabled]="!newUserForm.form.valid">Enter
+    </button>
   </div>
 </ng-template>
 
-<!-- <button class="btn btn-outline-primary mb-2 mr-2" (click)="openVerticallyCentered(content)">Modal new user</button> -->
-
-
-<ng-template #adminModal let-modal>
+<ng-template #adminModal let-adminModal>
   <div class="modal-header">
-    <h4 class="modal-title">Modal title</h4>
-    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+    <h4 class="modal-title">You've created a new retro room!</h4>
+    <!-- <button type="button" class="close" aria-label="Close" (click)="adminModal.dismiss('Cross click')">
       <span aria-hidden="true">&times;</span>
-    </button>
+    </button> -->
   </div>
   <div class="modal-body">
     <p>Admin modal&hellip;</p>
+    <form #adminForm="ngForm">
+      <div class="form-group"> 
+        <label for="adminName">Name</label>
+        <input type="text" name="adminName" class="form-control" #adminName="ngModel" required [(ngModel)]="admin.name">
+        <!-- <div *ngIf="(adminForm.submitted || adminName.touched) && adminName.errors">
+          <div *ngIf="adminName.errors.required">Name is required.</div>
+        </div> -->
+      </div>
+    </form>
   </div>
   <div class="modal-footer">
-    <button type="button" class="btn btn-light" (click)="modal.close('Close click')">Close</button>
+    <button type="button" class="btn btn-light" 
+      (click)="sendConfig(adminModal)"
+      [disabled]="!adminForm.form.valid">Submit
+    </button>
   </div>
 </ng-template>
