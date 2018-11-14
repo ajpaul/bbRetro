@@ -27,10 +27,8 @@ io.on('connection', (socket) => {
         admin.id = socket.id;
         io.emit('admin', { admin: admin.id, status: true, adminName: '' });
     } 
-    else {
-        console.log(`stored: ${admin.id}, connected: ${socket.id}`);
-        io.emit('admin', { admin: admin.id, status: false, adminName: admin.adminName }); // lol
-    }
+    else
+        io.emit('admin', { admin: admin.id, status: false, adminName: admin.adminName });
 
     socket.on('newItem', (item) => {
         const retroItem = events.newItem(item, io, stateId, socket.id);
@@ -52,6 +50,7 @@ io.on('connection', (socket) => {
 
     socket.on('deleteItem', (item) => {
         events.deleteItem(item, io);
+        // need to update state
         audit('deleteItem');
     });
 
